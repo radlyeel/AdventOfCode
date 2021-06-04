@@ -16,24 +16,27 @@ with open(infile_name, 'r') as fp:
         forest.append(row)
         row = fp.readline()
 
-rows = len(forest)
-print(f'Forest is {rows} deep and {width} wide')
+# Here we do some refactoring.  We make a function that returns the hit count,
+# given a forest and a slope
+def count_hits(forest, right, down):
+    rows = len(forest)
+    # Here we traverse the forest by stepping over and down, checking to see
+    # if a tree is present ('#'), and if it is, we simply count it.  The
+    # forest repeats to the right ad infinitum
+    x = 0
+    y = 0
+    hits = 0
+    while y < rows:
+        if forest[y][x % width] == '#':
+            hits += 1
+        x += right
+        y += down
 
-# Stepping distances
-right = 3
-down = 1
+    return hits
 
-# Here we traverse the forest by stepping over and down, checking to see
-# if a tree is present ('#'), and if it is, we simply count it.  The
-# forest repeats to the right ad infinitum
-x = 0
-y = 0
-hits = 0
-while y < rows:
-    print(f'x:y = {x},{y} spot[{y}][{x % width}] = {forest[y][x % width]}  Row = {forest[y]}')
-    if forest[y][x % width] == '#':
-        hits += 1
-    x += right
-    y += down
+options = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
+hit_product = 1
+for option in options:
+    hit_product *= count_hits(forest, option[0], option[1])
 
-print(f'You hit {hits} trees on the way down.')
+print(f'Product of all options = {hit_product}')
