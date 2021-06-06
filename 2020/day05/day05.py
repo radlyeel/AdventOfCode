@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Part 1
+# Part 2
+# Build a list of all seats.  Ignore missing seats at the low and high end of
+# the range.  Find the missing seat
 
 # Edit this line to change source of data
 infile_name = 'input.txt'
@@ -20,6 +22,7 @@ def disp(block, spec):
     return block[0]
 
 # Now process the data
+all_seats = []
 with open(infile_name, 'r') as fp:
     seatpass = fp.readline().strip()
     max_seat_id = 0
@@ -31,8 +34,15 @@ with open(infile_name, 'r') as fp:
         sp = seatpass[7:]
         col = disp(blk, sp)
         seat_id = row * 8 + col
+        all_seats.append(seat_id)
         if seat_id > max_seat_id:
             max_seat_id = seat_id
         seatpass = fp.readline().strip()
 
-print(f"Max seat id: {max_seat_id}")
+# Scan for missing seat
+for this_seat in range(max_seat_id):
+    if not this_seat in all_seats \
+       and this_seat + 1 in all_seats \
+       and this_seat - 1 in all_seats:
+        print(f"Your seat is {this_seat}")
+        break;
