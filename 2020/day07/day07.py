@@ -19,6 +19,10 @@
 
 infile_name = "input.txt"
 
+# Part 2
+# sample.txt yields 32
+# sample2.txt yields 126
+
 rules = {}
 
 with open(infile_name, 'r') as fp:
@@ -77,14 +81,28 @@ def can_contain(container_bag, my_bag, nesting):
             found = can_contain(packet[1], my_bag, nesting + 1)
     return found
 
+# Helper function for part 2
+def bag_count(bag_type, nesting):
+    contents = rules[bag_type]
+
+    # The bag itself counts as one
+    total = 1
+
+    for packet in contents:
+        total += packet[0] * bag_count(packet[1], nesting + 1)
+
+    return total
+    
 my_type = "shiny gold"
+
+print("Part 1:")
 choices = 0
 for bag_type in rules.keys():
     if (bag_type != my_type):
         can = can_contain(bag_type, my_type, 0)
         if can:
             choices += 1
-
 print(f"You have {choices} choices.")
 
-
+print("Part 2:")
+print(f"Total for bag type <{my_type}> = {bag_count(my_type, 0)-1}")
