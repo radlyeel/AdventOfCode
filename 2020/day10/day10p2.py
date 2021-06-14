@@ -33,11 +33,15 @@ adapters.sort()
 target_rating = adapters[-1]
 final_rating = target_rating + max_difference
 
-possible = [0]
-for current_adapter in range(len(adapters)):
-    if current_adapter != 6:
-        possible.append(adapters[current_adapter])
-
+# To complete part 2, we need a helper function that will take a starting
+# index and compute a list of the possible tail chains.  Thus, in the
+# short version, tails(dapters, 10) will return
+#    [11 12, 15, 16, 19] and [12, 15, 16, 19]
+def tails(ll, n):
+    tail = []
+    target = ll[-1]
+    i = n
+    while i < len(ll):
 # Adjust for last adapter
 possible.append(possible[-1] + max_difference)
 
